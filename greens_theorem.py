@@ -134,32 +134,72 @@ with col1:
     
     st.pyplot(fig)
 
+# ... (前面的畫圖程式碼)
+    ax.legend(loc='upper right')
+    
+    st.pyplot(fig)
+    
+    # --- 新增：在圖表下方動態顯示圓方程式 ---
+    st.markdown("<br>", unsafe_allow_html=True) # 增加一點上方留白，讓排版不擁擠
+    st.markdown("<p style='text-align: center; font-size: 18px; font-weight: bold; color: #1f77b4;'>📍 積分邊界 C (圓方程式)</p>", unsafe_allow_html=True)
+    st.latex(rf"x^2 + y^2 = {radius**2:.2f}")
+
 with col2:
-    st.subheader("*等號左右式子運算")
+    st.subheader("🧮 雙通道即時運算對決")
     st.markdown(f"**當前向量場**：$P(x,y) = {P_str}$, $Q(x,y) = {Q_str}$")
-    st.markdown(f"**當前半徑**：$r = {radius}$")
+    st.markdown(f"**當前半徑**：$r = {radius:.2f}$")
     st.markdown("---")
     
-    # 理論計算區
     if field_option == "旋轉場 (P = -y, Q = x)":
+        # --- 🔵 左式：線積分推導 ---
+        st.markdown("### 🔵 左式：直接計算線積分")
+        st.latex(r"\LARGE \oint_C (P dx + Q dy)")
+        st.write("參數化圓周 $C$：$x = r\cos\theta, y = r\sin\theta$")
+        st.write("微小量轉換：$dx = -r\sin\theta d\theta, dy = r\cos\theta d\theta$")
+        st.latex(r"= \int_{0}^{2\pi} [(-r\sin\theta)(-r\sin\theta) + (r\cos\theta)(r\cos\theta)] d\theta")
+        st.latex(r"= \int_{0}^{2\pi} r^2 (\sin^2\theta + \cos^2\theta) d\theta")
+        st.latex(r"= \int_{0}^{2\pi} r^2 d\theta = 2\pi r^2")
+        
         line_integral_val = 2 * np.pi * (radius**2)
-        area_integral_val = curl * (np.pi * (radius**2))
-    else:
-        line_integral_val = 0
-        area_integral_val = 0
+        st.latex(rf"= 2\pi ({radius:.2f})^2 = \mathbf{{{line_integral_val:.4f}}}")
 
-    st.markdown("### 🔵左式：直接計算線積分")
-    st.latex(r"\oint_C (P dx + Q dy)")
-    st.write(f"沿著半徑為 {radius} 的圓周 $C$ 參數化積分：")
-    st.write(f"計算結果 = **{line_integral_val:.4f}**")
-    
-    st.markdown("### 🔴右式：格林定理雙重積分")
-    st.latex(r"\iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
-    st.write(f"計算旋度 (Curl) = {curl}，並乘上圓面積 $\pi r^2$：")
-    st.write(f"計算結果 = **{area_integral_val:.4f}**")
-    
+        # --- 🔴 右式：雙重積分推導 (偏微分與極座標) ---
+        st.markdown("### 🔴 右式：格林定理雙重積分")
+        st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
+        st.write("1. 計算偏微分與旋度 (Curl)：")
+        st.latex(r"\frac{\partial Q}{\partial x} = 1, \quad \frac{\partial P}{\partial y} = -1 \quad \Rightarrow \quad \text{Curl} = 1 - (-1) = 2")
+        st.write("2. 轉化為極座標計算 ($x=\rho\cos\theta, y=\rho\sin\theta, dA = \rho d\rho d\theta$)：")
+        st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (2) \rho \, d\rho \, d\theta")
+        st.latex(r"= \int_{0}^{2\pi} \left[ \rho^2 \right]_{0}^{r} d\theta = \int_{0}^{2\pi} r^2 d\theta")
+        
+        area_integral_val = 2 * np.pi * (radius**2)
+        st.latex(rf"= 2\pi ({radius:.2f})^2 = \mathbf{{{area_integral_val:.4f}}}")
+
+    else:
+        # --- 🔵 左式：線積分推導 (純量場) ---
+        st.markdown("### 🔵 左式：直接計算線積分")
+        st.latex(r"\LARGE \oint_C (P dx + Q dy)")
+        st.write("參數化圓周 $C$：$x = r\cos\theta, y = r\sin\theta$")
+        st.write("微小量轉換：$dx = -r\sin\theta d\theta, dy = r\cos\theta d\theta$")
+        st.latex(r"= \int_{0}^{2\pi} [(r\cos\theta)(-r\sin\theta) + (r\sin\theta)(r\cos\theta)] d\theta")
+        st.latex(r"= \int_{0}^{2\pi} (-r^2\sin\theta\cos\theta + r^2\sin\theta\cos\theta) d\theta")
+        
+        line_integral_val = 0.0
+        st.latex(rf"= \int_{0}^{2\pi} 0 \, d\theta = \mathbf{{{line_integral_val:.4f}}}")
+
+        # --- 🔴 右式：雙重積分推導 (純量場) ---
+        st.markdown("### 🔴 右式：格林定理雙重積分")
+        st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
+        st.write("1. 計算偏微分與旋度 (Curl)：")
+        st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{Curl} = 0 - 0 = 0")
+        st.write("2. 轉化為極座標計算 ($dA = \rho d\rho d\theta$)：")
+        st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (0) \rho \, d\rho \, d\theta")
+        
+        area_integral_val = 0.0
+        st.latex(rf"= \mathbf{{{area_integral_val:.4f}}}")
+
     st.markdown("---")
     if np.isclose(line_integral_val, area_integral_val):
-        st.success("驗證：線積分結果與面積分結果完全相等")
+        st.success("✅ 驗證：線積分結果與面積分結果完全相等")
     else:
         st.error("❌ 驗證失敗")
