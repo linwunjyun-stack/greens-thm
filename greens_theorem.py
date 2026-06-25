@@ -13,8 +13,10 @@ plt.rcParams.update({
 })
 
 st.set_page_config(layout="wide")
-st.title("格林定理 (Green's Theorem) 動態驗證器")
-st.write("本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。")
+st.title("驗證格林定理 (Green's Theorem) ")
+st.write("本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。"
+        'font.size': 28, 
+        )
 
 # --- 側邊欄控制區 ---
 st.sidebar.header("🛠️ 參數與向量場控制")
