@@ -184,8 +184,8 @@ with col2:
         st.latex(r"= \int_{0}^{2\pi} [(r\cos\theta)(-r\sin\theta) + (r\sin\theta)(r\cos\theta)] d\theta")
         st.latex(r"= \int_{0}^{2\pi} (-r^2\sin\theta\cos\theta + r^2\sin\theta\cos\theta) d\theta")
         
-        line_integral_val = 0.0
-        st.latex(rf"= \int_{0}^{2\pi} 0 \, d\theta = \mathbf{{{line_integral_val:.4f}}}")
+       # 將原本的 {0} 改成 {{0}}，{2\pi} 改成 {{2\pi}}
+        st.latex(rf"= \int_{{0}}^{{2\pi}} 0 \, d\theta = \mathbf{{{line_integral_val:.4f}}}")
 
         # --- 🔴 右式：雙重積分推導 (純量場) ---
         st.markdown("### 🔴 右式：格林定理雙重積分")
