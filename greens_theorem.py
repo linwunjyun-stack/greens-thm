@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 # --- 新增：Matplotlib 全域字體與排版設定 ---
 plt.rcParams.update({
     'font.size': 20,        # 基礎字體大小
-    'axes.labelsize': 10,   # X軸/Y軸標題的字體大小
-    'xtick.labelsize': 8,   # X軸刻度數字大小 (調小一點更精緻)
-    'ytick.labelsize': 8,   # Y軸刻度數字大小
-    'legend.fontsize': 9,   # 圖例字體大小
+    'axes.labelsize': 5,   # X軸/Y軸標題的字體大小
+    'xtick.labelsize': 5,   # X軸刻度數字大小 (調小一點更精緻)
+    'ytick.labelsize': 5,   # Y軸刻度數字大小
+    'legend.fontsize': 5,   # 圖例字體大小
     'figure.autolayout': True # 自動排版，防止標籤被切掉
 })
 
@@ -70,7 +70,7 @@ col1, col2 = st.columns([1, 1.5])
 with col1:
     st.subheader("📊 向量場與積分區域動態視覺化")
     # 將 figsize 的數字調小，例如 (4, 4) 或 (3.5, 3.5)
-    fig, ax = plt.subplots(figsize=(4, 4))
+    fig, ax = plt.subplots(figsize=(3.5, 3.5))
     
     # 畫出向量場 (Quiver)
     ax.quiver(X, Y, P, Q, color='lightgray', alpha=0.8)
