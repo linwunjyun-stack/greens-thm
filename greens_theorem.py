@@ -12,11 +12,11 @@ plt.rcParams.update({
     'figure.autolayout': True # 自動排版，防止標籤被切掉
 })
 
-st.set_page_config(layout="wide")
-st.title("驗證格林定理 (Green's Theorem) ")
-st.write("本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。"
-        'font.size': 28, 
-        )
+# 1. 使用 HTML 的 <h1> 標籤來放大主標題，你可以隨意調整 45px 這個數字
+st.markdown('<h1 style="font-size: 40px;">🌪️ 驗證格林定理 (Green\'s Theorem)</h1>', unsafe_allow_html=True)
+
+# 2. 使用 HTML 的 <p> 標籤來放大內文說明，你可以隨意調整 22px 這個數字
+st.markdown('<p style="font-size: 30px;">本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。</p>', unsafe_allow_html=True)
 
 # --- 側邊欄控制區 ---
 st.sidebar.header("🛠️ 參數與向量場控制")
@@ -70,7 +70,7 @@ y_c = radius * np.sin(theta)
 col1, col2 = st.columns([1, 1.5])
 
 with col1:
-    st.subheader("📊 向量場與積分區域動態視覺化")
+    st.subheader("*向量場與積分區域動態視覺化")
     # 將 figsize 的數字調小，例如 (4, 4) 或 (3.5, 3.5)
     fig, ax = plt.subplots(figsize=(3.5, 3.5))
     
@@ -93,7 +93,7 @@ with col1:
     st.pyplot(fig)
 
 with col2:
-    st.subheader("🧮 雙通道即時運算對決")
+    st.subheader("*等號左右式子運算")
     st.markdown(f"**當前向量場**：$P(x,y) = {P_str}$, $Q(x,y) = {Q_str}$")
     st.markdown(f"**當前半徑**：$r = {radius}$")
     st.markdown("---")
@@ -106,12 +106,12 @@ with col2:
         line_integral_val = 0
         area_integral_val = 0
 
-    st.markdown("### 🔵 通道一：直接計算線積分 (左式)")
+    st.markdown("### 🔵左式：直接計算線積分")
     st.latex(r"\oint_C (P dx + Q dy)")
     st.write(f"沿著半徑為 {radius} 的圓周 $C$ 參數化積分：")
     st.write(f"計算結果 = **{line_integral_val:.4f}**")
     
-    st.markdown("### 🔴 通道二：格林定理雙重積分 (右式)")
+    st.markdown("### 🔴右式：格林定理雙重積分")
     st.latex(r"\iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
     st.write(f"計算旋度 (Curl) = {curl}，並乘上圓面積 $\pi r^2$：")
     st.write(f"計算結果 = **{area_integral_val:.4f}**")
