@@ -56,7 +56,7 @@ st.markdown(
 )
 
 # --- 4. 網頁大標題與說明 (使用 HTML 放大) ---
-st.markdown('<h1 style="font-size: 40px;">驗證格林定理 (Green\'s Theorem)</h1>', unsafe_allow_html=True)
+st.markdown('<h1 style="font-size: 40px;">格林定理 (Green\'s Theorem)</h1>', unsafe_allow_html=True)
 st.markdown('<p style="font-size: 22px;">本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。</p>', unsafe_allow_html=True)
 
 # (接下來就接著原本的側邊欄控制區：st.sidebar.header("🛠️ 參數與向量場控制")...)
