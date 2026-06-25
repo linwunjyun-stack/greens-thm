@@ -52,11 +52,13 @@ x_c = radius * np.cos(theta)
 y_c = radius * np.sin(theta)
 
 # --- 視覺化呈現 ---
-col1, col2 = st.columns([1.2, 1])
+# 調整左右欄位的比例：讓左邊圖表區佔比變小 (例如 1)，右邊文字計算區變大 (例如 1.5)
+col1, col2 = st.columns([1, 1.5])
 
 with col1:
     st.subheader("📊 向量場與積分區域動態視覺化")
-    fig, ax = plt.subplots(figsize=(6, 6))
+    # 將 figsize 的數字調小，例如 (4, 4) 或 (3.5, 3.5)
+    fig, ax = plt.subplots(figsize=(4, 4))
     
     # 畫出向量場 (Quiver)
     ax.quiver(X, Y, P, Q, color='lightgray', alpha=0.8)
