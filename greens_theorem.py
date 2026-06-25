@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
-st.title("🌪️ 格林定理 (Green's Theorem) 動態驗證器")
+st.title("格林定理 (Green's Theorem) 動態驗證器")
 st.write("本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。")
 
 # --- 側邊欄控制區 ---
@@ -16,7 +16,7 @@ field_option = st.sidebar.selectbox(
 )
 
 # 2. 選擇積分區域大小 (以圓形為例)
-radius = st.sidebar.slider("調整積分區域半徑 (r)", 1.0, 5.0, 2.0, step=0.5)
+radius = st.sidebar.slider("調整積分區域半徑 (r)", 1.0, 3.0, 2.0, step=0.5)
 
 st.sidebar.markdown("---")
 st.sidebar.write("💡 **工程應用提示**：在測量學中，我們常利用格林定理（面積計算特例）來求算不規則土地的面積；在流體力學中，它則關乎環流與旋度的計算。")
