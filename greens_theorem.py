@@ -79,6 +79,23 @@ radius = st.sidebar.number_input(
     format="%.2f"     # 強制顯示到小數點後兩位，增加工程嚴謹度
 )
 
+# 2. 選擇積分區域大小 (以圓形為例)
+radius = st.sidebar.number_input(
+    # ... (保留你原本的 radius 程式碼) ...
+)
+
+# --- 🎯 新增：3. 選擇積分角度 (控制扇形開合) ---
+theta_deg = st.sidebar.slider(
+    "選擇積分角度範圍 (θ 度)",
+    min_value=15,
+    max_value=360,
+    value=360,
+    step=15
+)
+theta_rad = np.radians(theta_deg) # 將角度轉換為數學用的弧度 (\pi)
+
+st.sidebar.markdown("---")
+
 st.sidebar.markdown("---")
 
 # --- 數學與繪圖邏輯 ---
@@ -102,29 +119,36 @@ else:
     curl = 0  # dQ/dx - dP/dy = 0 - 0 = 0
     P_str, Q_str = "x", "y"
 
-# 定義邊界曲線 C (圓形參數式)
-theta = np.linspace(0, 2*np.pi, 100)
-x_c = radius * np.cos(theta)
-y_c = radius * np.sin(theta)
+# --- 幾何邏輯升級：定義邊界曲線 C (扇形封閉參數式) ---
+theta = np.linspace(0, theta_rad, 100)
+x_arc = radius * np.cos(theta)
+y_arc = radius * np.sin(theta)
+
+# 為了形成封閉區域，將圓弧的頭尾連回原點 (0,0)
+x_c = np.concatenate(([0], x_arc, [0]))
+y_c = np.concatenate(([0], y_arc, [0]))
 
 # --- 視覺化呈現 ---
-# 調整左右欄位的比例：讓左邊圖表區佔比變小 (例如 1)，右邊文字計算區變大 (例如 1.5)
 col1, col2 = st.columns([1, 1.5])
 
 with col1:
-    st.subheader("*向量場與積分區域動態視覺化")
-    # 將 figsize 的數字調小，例如 (4, 4) 或 (3.5, 3.5)
+    st.subheader("📊 向量場與積分區域動態視覺化")
     fig, ax = plt.subplots(figsize=(3.5, 3.5))
     
-    # 畫出向量場 (Quiver)
     ax.quiver(X, Y, P, Q, color='lightgray', alpha=0.8)
     
     # 畫出積分區域 R (填色)
-    ax.fill(x_c, y_c, color='#1f77b4', alpha=0.3, label=f'Region R (r={radius})')
+    ax.fill(x_c, y_c, color='#1f77b4', alpha=0.3, label=f'Region R (r={radius:.1f}, θ={theta_deg}°)')
     
-    # 畫出邊界 C 及其方向 (逆時針箭頭)
+    # 畫出邊界 C 及其方向
     ax.plot(x_c, y_c, color='red', linewidth=2, label='Boundary C')
-    ax.arrow(radius*0.707, radius*0.707, -0.1, 0.1, shape='full', lw=2, length_includes_head=True, head_width=0.3, color='red', zorder=5) # 在 45 度角加個逆時針箭頭
+    
+    # 🎯 動態箭頭：計算弧線中點的切線方向，確保箭頭永遠順著逆時針方向
+    mid_theta = theta_rad / 2
+    dx = -0.15 * np.sin(mid_theta) # 切線向量 X
+    dy =  0.15 * np.cos(mid_theta) # 切線向量 Y
+    ax.arrow(radius * np.cos(mid_theta), radius * np.sin(mid_theta), dx, dy, 
+             shape='full', lw=2, length_includes_head=True, head_width=radius*0.1, color='red', zorder=5)
     
     ax.set_xlim([-bound, bound])
     ax.set_ylim([-bound, bound])
@@ -143,53 +167,64 @@ with col2:
     st.markdown(f"**當前向量場**：$P(x,y) = {P_str}$, $Q(x,y) = {Q_str}$")
     st.markdown(f"**當前半徑**：$r = {radius:.2f}$")
     st.markdown("---")
-    
-    if field_option == "旋轉場 (P = -y, Q = x)":
+
+if field_option == "旋轉場 (P = -y, Q = x)":
         # --- 🔵 左式：線積分推導 ---
         st.markdown("### 🔵 左式：直接計算線積分")
         st.latex(r"\LARGE \oint_C (P dx + Q dy)")
+        
+        # 🔥 神級細節：解釋扇形邊界的線積分
+        st.write(r"封閉邊界 $C$ 包含：圓弧段與兩條過原點的直線段。")
+        st.write(r"*(注意：由於此場特性，沿著徑向直線的線積分恰好皆為 0，故總做功 = 圓弧段積分)*")
         st.write("參數化圓周 $C$：$x = r\cosθ, y = r\sinθ$")
         st.write("微分轉換：$dx = -r\sinθ dθ, dy = r\cosθ dθ$")
-        st.latex(r"= \int_{0}^{2\pi} [(-r\sin\theta)(-r\sin\theta) + (r\cos\theta)(r\cos\theta)] d\theta")
-        st.latex(r"= \int_{0}^{2\pi} r^2 (\sin^2\theta + \cos^2\theta) d\theta")
-        st.latex(r"= \int_{0}^{2\pi} r^2 d\theta = 2\pi r^2")
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} [(-r\sin\theta)(-r\sin\theta) + (r\cos\theta)(r\cos\theta)] d\theta")
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} r^2 (\sin^2\theta + \cos^2\theta) d\theta")
         
-        line_integral_val = 2 * np.pi * (radius**2)
-        st.latex(rf"= 2\pi ({radius:.2f})^2 = \mathbf{{{line_integral_val:.4f}}}")
+        line_integral_val = (radius**2) * theta_rad
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} {radius**2:.2f} \, d\theta = \mathbf{{{line_integral_val:.4f}}}")
 
         # --- 🔴 右式：雙重積分推導 (偏微分與極座標) ---
         st.markdown("### 🔴 右式：格林定理雙重積分")
         st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
-        st.write("1. 計算偏微分與旋度 (Curl)：")
-        st.latex(r"\frac{\partial Q}{\partial x} = 1, \quad \frac{\partial P}{\partial y} = -1 \quad \Rightarrow \quad \text{Curl} = 1 - (-1) = 2")
-        st.write("2. 轉化為極座標計算 ($x=ρ\cosθ, y=ρ\sinθ, dA = ρ dρ dθ$)：")
-        st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq θ \leq 2\pi$")
-        st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (2) \rho \, d\rho \, d\theta")
-        st.latex(r"= \int_{0}^{2\pi} \left[ \rho^2 \right]_{0}^{r} d\theta = \int_{0}^{2\pi} r^2 d\theta")
         
-        area_integral_val = 2 * np.pi * (radius**2)
-        st.latex(rf"= 2\pi ({radius:.2f})^2 = \mathbf{{{area_integral_val:.4f}}}")
+        st.write("1. 確立向量場函數與計算偏微分&旋度 (Curl)：")：")
+        st.latex(r"P(x,y) = -y, \quad Q(x,y) = x")
+        st.latex(r"\frac{\partial Q}{\partial x} = 1, \quad \frac{\partial P}{\partial y} = -1 \quad \Rightarrow \quad \text{CurlF} = 2")
+        
+        st.write("2. 轉化為極座標計算 ($x=ρ\cosθ, y=ρ\sinθ, dA = ρ dρ dθ$)：")
+        # 🔥 更新：動態顯示使用者選擇的角度上限
+        st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq θ \leq {theta_rad:.2f}$")
+        
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} \int_{{0}}^{{{radius:.2f}}} (2) \rho \, d\rho \, d\theta")
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} \left[ \rho^2 \right]_{{0}}^{{{radius:.2f}}} d\theta")
+        
+        area_integral_val = (radius**2) * theta_rad
+        st.latex(rf"= {radius**2:.2f} \times {theta_rad:.2f} = \mathbf{{{area_integral_val:.4f}}}")
 
     else:
         # --- 🔵 左式：線積分推導 (純量場) ---
         st.markdown("### 🔵 左式：直接計算線積分")
         st.latex(r"\LARGE \oint_C (P dx + Q dy)")
-        st.write("參數化圓周 $C$：$x = r\cosθ, y = r\sinθ$")
-        st.write("微小量轉換：$dx = -r\sinθ dθ, dy = r\cosθ dθ$")
-        st.latex(r"= \int_{0}^{2\pi} [(r\cos\theta)(-r\sin\theta) + (r\sin\theta)(r\cos\theta)] d\theta")
-        st.latex(r"= \int_{0}^{2\pi} (-r^2\sin\theta\cos\theta + r^2\sin\theta\cos\theta) d\theta")
+        st.write(r"*(此為保守場，任何封閉迴路的線積分必為 0)*")
         
-       # 將原本的 {0} 改成 {{0}}，{2\pi} 改成 {{2\pi}}
-        st.latex(rf"= \int_{{0}}^{{2\pi}} 0 \, d\theta = \mathbf{{{line_integral_val:.4f}}}")
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} (-r^2\sin\theta\cos\theta + r^2\sin\theta\cos\theta) d\theta + 0")
+        
+        line_integral_val = 0.0
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} 0 \, d\theta = \mathbf{{{line_integral_val:.4f}}}")
 
         # --- 🔴 右式：雙重積分推導 (純量場) ---
         st.markdown("### 🔴 右式：格林定理雙重積分")
         st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
-        st.write("1. 計算偏微分與旋度 (CurlF)：")
-        st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{CurlF} = 0 - 0 = 0")
+        
+        st.write("1. 確立向量場函數與計算偏微分：")
+        st.latex(r"P(x,y) = x, \quad Q(x,y) = y")
+        st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{Curl} = 0")
+
         st.write("2. 轉化為極座標計算 ($x = ρ\cosθ, y = ρ\sinθ, dA = ρ\dρ \dθ$)：")
-        st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq θ \leq 2\pi$")
-        st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (0) \rho \, d\rho \, d\theta")
+        st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq θ \leq {theta_rad:.2f}$")
+        
+        st.latex(rf"= \int_{{0}}^{{{theta_rad:.2f}}} \int_{{0}}^{{{radius:.2f}}} (0) \rho \, d\rho \, d\theta")
         
         area_integral_val = 0.0
         st.latex(rf"= \mathbf{{{area_integral_val:.4f}}}")
