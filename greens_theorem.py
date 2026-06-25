@@ -2,22 +2,64 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
-# --- 新增：Matplotlib 全域字體與排版設定 ---
+# --- 1. Matplotlib 全域字體與排版設定 ---
 plt.rcParams.update({
-    'font.size': 20,        # 基礎字體大小
-    'axes.labelsize': 5,   # X軸/Y軸標題的字體大小
-    'xtick.labelsize': 5,   # X軸刻度數字大小 (調小一點更精緻)
-    'ytick.labelsize': 5,   # Y軸刻度數字大小
-    'legend.fontsize': 5,   # 圖例字體大小
-    'figure.autolayout': True # 自動排版，防止標籤被切掉
+    'font.size': 10,        
+    'axes.labelsize': 10,   
+    'xtick.labelsize': 8,   
+    'ytick.labelsize': 8,   
+    'legend.fontsize': 9,   
+    'figure.autolayout': True 
 })
 
-# 1. 使用 HTML 的 <h1> 標籤來放大主標題，你可以隨意調整 45px 這個數字
-st.markdown('<h1 style="font-size: 40px;">🌪️ 驗證格林定理 (Green\'s Theorem)</h1>', unsafe_allow_html=True)
+# --- 2. 確保網頁是寬螢幕版面 (如果你剛好遺失了這行，這會補回來) ---
+st.set_page_config(layout="wide")
 
-# 2. 使用 HTML 的 <p> 標籤來放大內文說明，你可以隨意調整 22px 這個數字
-st.markdown('<p style="font-size: 30px;">本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。</p>', unsafe_allow_html=True)
+# --- 3. CSS 魔法：全局字體放大設定 ---
+st.markdown(
+    """
+    <style>
+    /* 側邊欄：標題與說明文字 */
+    [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
+        font-size: 20px !important;
+        font-weight: bold !important;
+    }
+    [data-testid="stSidebar"] .stMarkdown p {
+        font-size: 18px !important;
+    }
+    [data-testid="stSidebar"] input, 
+    [data-testid="stSidebar"] div[data-baseweb="select"] {
+        font-size: 19.5px !important;
+    }
 
+    /* 主畫面：一般說明文字 */
+    div[data-testid="stMarkdownContainer"] p {
+        font-size: 19.5px !important;
+        line-height: 1.8 !important; 
+    }
+    
+    /* 主畫面：放大 H3 標題 */
+    h3 {
+        font-size: 26px !important;
+        font-weight: bold !important;
+        padding-top: 15px !important; 
+    }
+    
+    /* 主畫面：放大綠色提示框文字 */
+    div[data-testid="stAlert"] div[data-testid="stMarkdownContainer"] p {
+        font-size: 22px !important;
+        font-weight: bold !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# --- 4. 網頁大標題與說明 (使用 HTML 放大) ---
+st.markdown('<h1 style="font-size: 40px;">驗證格林定理 (Green\'s Theorem)</h1>', unsafe_allow_html=True)
+st.markdown('<p style="font-size: 22px;">本工具動態展示並嚴格驗證封閉曲線之線積分與區域雙重積分的等價關係。</p>', unsafe_allow_html=True)
+
+# (接下來就接著原本的側邊欄控制區：st.sidebar.header("🛠️ 參數與向量場控制")...)
 # --- 側邊欄控制區 ---
 st.sidebar.header("🛠️ 參數與向量場控制")
 
