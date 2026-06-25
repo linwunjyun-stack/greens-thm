@@ -26,12 +26,14 @@ radius = st.sidebar.number_input(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.write("💡 **工程應用提示**：在測量學中，我們常利用格林定理（面積計算特例）來求算不規則土地的面積；在流體力學中，它則關乎環流與旋度的計算。")
 
 # --- 數學與繪圖邏輯 ---
+# 動態座標軸：根據輸入的半徑自動擴張範圍，確保圖形永遠美觀
+bound = max(10.0, radius * 1.5) 
+
 # 建立網格以繪製向量場
-x = np.linspace(-6, 6, 20)
-y = np.linspace(-6, 6, 20)
+x = np.linspace(-bound, bound, 22)
+y = np.linspace(-bound, bound, 22)
 X, Y = np.meshgrid(x, y)
 
 # 定義向量場 P 和 Q
@@ -70,8 +72,8 @@ with col1:
     ax.plot(x_c, y_c, color='red', linewidth=2, label='Boundary C')
     ax.arrow(radius*0.707, radius*0.707, -0.1, 0.1, shape='full', lw=2, length_includes_head=True, head_width=0.3, color='red', zorder=5) # 在 45 度角加個逆時針箭頭
     
-    ax.set_xlim([-6, 6])
-    ax.set_ylim([-6, 6])
+    ax.set_xlim([-bound, bound])
+    ax.set_ylim([-bound, bound])
     ax.set_aspect('equal')
     ax.grid(True, linestyle='--', alpha=0.5)
     ax.legend(loc='upper right')
