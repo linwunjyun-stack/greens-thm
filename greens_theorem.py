@@ -188,7 +188,7 @@ if field_option == "旋轉場 (P = -y, Q = x)":
         st.markdown("### 🔴 右式：格林定理雙重積分")
         st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
         
-        st.write("1. 確立向量場函數與計算偏微分&旋度 (Curl)：")：")
+        st.write("1. 確立向量場函數與計算偏微分&旋度 (Curl)：")
         st.latex(r"P(x,y) = -y, \quad Q(x,y) = x")
         st.latex(r"\frac{\partial Q}{\partial x} = 1, \quad \frac{\partial P}{\partial y} = -1 \quad \Rightarrow \quad \text{CurlF} = 2")
         
@@ -217,9 +217,9 @@ if field_option == "旋轉場 (P = -y, Q = x)":
         st.markdown("### 🔴 右式：格林定理雙重積分")
         st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
         
-        st.write("1. 確立向量場函數與計算偏微分：")
+        st.write("1. 確立向量場函數與計算偏微分&旋度 (Curl)：")
         st.latex(r"P(x,y) = x, \quad Q(x,y) = y")
-        st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{Curl} = 0")
+        st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{CurlF} = 0")
 
         st.write("2. 轉化為極座標計算 ($x = ρ\cosθ, y = ρ\sinθ, dA = ρ\dρ \dθ$)：")
         st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq θ \leq {theta_rad:.2f}$")
