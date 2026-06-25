@@ -186,7 +186,7 @@ with col2:
         st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
         st.write("1. 計算偏微分與旋度 (CurlF)：")
         st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{CurlF} = 0 - 0 = 0")
-        st.write("2. 轉化為極座標計算 ($dx = ρ\cos\θ d\θ, dy = ρ\sin\θ d\θ, dA = ρ\d\ρ d\θ$)：")
+        st.write("2. 轉化為極座標計算 ($x = ρcosθ, y = ρsinθ, dA = ρdρ dθ$)：")
         st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (0) \rho \, d\rho \, d\theta")
         
         area_integral_val = 0.0
