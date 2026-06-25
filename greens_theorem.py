@@ -168,7 +168,7 @@ with col2:
     st.markdown(f"**當前半徑**：$r = {radius:.2f}$")
     st.markdown("---")
 
-if field_option == "旋轉場 (P = -y, Q = x)":
+    if field_option == "旋轉場 (P = -y, Q = x)":
         # --- 🔵 左式：線積分推導 ---
         st.markdown("### 🔵 左式：直接計算線積分")
         st.latex(r"\LARGE \oint_C (P dx + Q dy)")
