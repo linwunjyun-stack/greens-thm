@@ -163,6 +163,7 @@ with col2:
         st.write("1. 計算偏微分與旋度 (Curl)：")
         st.latex(r"\frac{\partial Q}{\partial x} = 1, \quad \frac{\partial P}{\partial y} = -1 \quad \Rightarrow \quad \text{Curl} = 1 - (-1) = 2")
         st.write("2. 轉化為極座標計算 ($x=ρ\cosθ, y=ρ\sinθ, dA = ρ dρ dθ$)：")
+        st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq \θ \leq 2\pi$")
         st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (2) \rho \, d\rho \, d\theta")
         st.latex(r"= \int_{0}^{2\pi} \left[ \rho^2 \right]_{0}^{r} d\theta = \int_{0}^{2\pi} r^2 d\theta")
         
@@ -187,6 +188,7 @@ with col2:
         st.write("1. 計算偏微分與旋度 (CurlF)：")
         st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{CurlF} = 0 - 0 = 0")
         st.write("2. 轉化為極座標計算 ($x = ρcosθ, y = ρsinθ, dA = ρdρ dθ$)：")
+        st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq \θ \leq 2\pi$")
         st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (0) \rho \, d\rho \, d\theta")
         
         area_integral_val = 0.0
