@@ -64,25 +64,23 @@ x_c = radius * np.cos(theta)
 y_c = radius * np.sin(theta)
 
 # --- 視覺化呈現 ---
-# 將欄位比例改成 [1, 2] 或 [0.8, 1.5]，左邊數字越小，圖表區塊就會越窄、圖越小
-col1, col2 = st.columns([1, 1.8])
+# 調整左右欄位的比例：讓左邊圖表區佔比變小 (例如 1)，右邊文字計算區變大 (例如 1.5)
+col1, col2 = st.columns([1, 1.5])
 
 with col1:
-    # 稍微縮短標題，避免版面變窄時文字折行
-    st.subheader("📊 向量場動態視覺化") 
-    
-    # figsize 數字調小，例如 (3.2, 3.2) 會讓整張圖的物理尺寸明顯縮小
-    fig, ax = plt.subplots(figsize=(3.2, 3.2))
+    st.subheader("📊 向量場與積分區域動態視覺化")
+    # 將 figsize 的數字調小，例如 (4, 4) 或 (3.5, 3.5)
+    fig, ax = plt.subplots(figsize=(4, 4))
     
     # 畫出向量場 (Quiver)
     ax.quiver(X, Y, P, Q, color='lightgray', alpha=0.8)
     
     # 畫出積分區域 R (填色)
-    ax.fill(x_c, y_c, color='#1f77b4', alpha=0.3, label=f'Region R (r={radius:.1f})')
+    ax.fill(x_c, y_c, color='#1f77b4', alpha=0.3, label=f'Region R (r={radius})')
     
     # 畫出邊界 C 及其方向 (逆時針箭頭)
     ax.plot(x_c, y_c, color='red', linewidth=2, label='Boundary C')
-    ax.arrow(radius*0.707, radius*0.707, -0.1, 0.1, shape='full', lw=2, length_includes_head=True, head_width=radius*0.15, color='red', zorder=5) # 讓箭頭大小也會隨半徑動態縮放
+    ax.arrow(radius*0.707, radius*0.707, -0.1, 0.1, shape='full', lw=2, length_includes_head=True, head_width=0.3, color='red', zorder=5) # 在 45 度角加個逆時針箭頭
     
     ax.set_xlim([-bound, bound])
     ax.set_ylim([-bound, bound])
@@ -91,6 +89,12 @@ with col1:
     ax.legend(loc='upper right')
     
     st.pyplot(fig)
+
+with col2:
+    st.subheader("🧮 雙通道即時運算對決")
+    st.markdown(f"**當前向量場**：$P(x,y) = {P_str}$, $Q(x,y) = {Q_str}$")
+    st.markdown(f"**當前半徑**：$r = {radius}$")
+    st.markdown("---")
     
     # 理論計算區
     if field_option == "旋轉場 (P = -y, Q = x)":
