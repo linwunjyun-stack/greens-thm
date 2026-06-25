@@ -174,8 +174,8 @@ with col2:
         # --- 🔵 左式：線積分推導 (純量場) ---
         st.markdown("### 🔵 左式：直接計算線積分")
         st.latex(r"\LARGE \oint_C (P dx + Q dy)")
-        st.write("參數化圓周 $C$：$x = r\cos\θ, y = r\sin\θ$")
-        st.write("微小量轉換：$dx = -r\sin\θ d\θ, dy = r\cos\θ d\θ$")
+        st.write("參數化圓周 $C$：$x = r\cosθ, y = r\sinθ$")
+        st.write("微小量轉換：$dx = -r\sinθ dθ, dy = r\cosθ dθ$")
         st.latex(r"= \int_{0}^{2\pi} [(r\cos\theta)(-r\sin\theta) + (r\sin\theta)(r\cos\theta)] d\theta")
         st.latex(r"= \int_{0}^{2\pi} (-r^2\sin\theta\cos\theta + r^2\sin\theta\cos\theta) d\theta")
         
@@ -187,7 +187,7 @@ with col2:
         st.latex(r"\LARGE \iint_R \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA")
         st.write("1. 計算偏微分與旋度 (CurlF)：")
         st.latex(r"\frac{\partial Q}{\partial x} = 0, \quad \frac{\partial P}{\partial y} = 0 \quad \Rightarrow \quad \text{CurlF} = 0 - 0 = 0")
-        st.write("2. 轉化為極座標計算 ($x = ρcosθ, y = ρsinθ, dA = ρdρ dθ$)：")
+        st.write("2. 轉化為極座標計算 ($x = ρ\cosθ, y = ρ\sinθ, dA = ρ\dρ \dθ$)：")
         st.write(rf"積分範圍：$0 \leq ρ \leq {radius:.2f}, \quad 0 \leq θ \leq 2\pi$")
         st.latex(r"= \int_{0}^{2\pi} \int_{0}^{r} (0) \rho \, d\rho \, d\theta")
         
