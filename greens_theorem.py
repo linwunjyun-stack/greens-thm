@@ -140,7 +140,6 @@ with col1:
     st.latex(rf"x^2 + y^2 = {radius**2:.2f}")
 
 with col2:
-    st.subheader("🧮 雙通道即時運算對決")
     st.markdown(f"**當前向量場**：$P(x,y) = {P_str}$, $Q(x,y) = {Q_str}$")
     st.markdown(f"**當前半徑**：$r = {radius:.2f}$")
     st.markdown("---")
