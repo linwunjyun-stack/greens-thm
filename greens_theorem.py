@@ -133,11 +133,6 @@ with col1:
     ax.legend(loc='upper right')
     
     st.pyplot(fig)
-
-# ... (前面的畫圖程式碼)
-    ax.legend(loc='upper right')
-    
-    st.pyplot(fig)
     
     # --- 新增：在圖表下方動態顯示圓方程式 ---
     st.markdown("<br>", unsafe_allow_html=True) # 增加一點上方留白，讓排版不擁擠
