@@ -149,7 +149,7 @@ with col2:
         st.markdown("### 🔵 左式：直接計算線積分")
         st.latex(r"\LARGE \oint_C (P dx + Q dy)")
         st.write("參數化圓周 $C$：$x = r\cos\theta, y = r\sin\theta$")
-        st.write("微小量轉換：$dx = -r\sin\theta d\theta, dy = r\cos\theta d\theta$")
+        st.write("微分轉換：$dx = -r\sin\θ d\θ, dy = r\cos\θ d\θ$")
         st.latex(r"= \int_{0}^{2\pi} [(-r\sin\theta)(-r\sin\theta) + (r\cos\theta)(r\cos\theta)] d\theta")
         st.latex(r"= \int_{0}^{2\pi} r^2 (\sin^2\theta + \cos^2\theta) d\theta")
         st.latex(r"= \int_{0}^{2\pi} r^2 d\theta = 2\pi r^2")
