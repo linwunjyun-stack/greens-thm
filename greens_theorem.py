@@ -79,16 +79,6 @@ radius = st.sidebar.number_input(
     format="%.2f"     # 強制顯示到小數點後兩位，增加工程嚴謹度
 )
 
-# 2. 選擇積分區域大小 (以圓形為例)
-radius = st.sidebar.number_input(
-    "輸入積分區域半徑 (r)",
-    min_value=0.1,    
-    max_value=100.0,  
-    value=2.0,        
-    step=0.5,         
-    format="%.2f"
-)
-
 # --- 🎯 新增：3. 選擇積分角度 (控制扇形開合) ---
 theta_deg = st.sidebar.slider(
     "選擇積分角度範圍 (θ 度)",
