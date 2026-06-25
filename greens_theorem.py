@@ -16,7 +16,14 @@ field_option = st.sidebar.selectbox(
 )
 
 # 2. 選擇積分區域大小 (以圓形為例)
-radius = st.sidebar.slider("調整積分區域半徑 (r)", 1.0, 3.0, 2.0, step=0.5)
+radius = st.sidebar.number_input(
+    "輸入積分區域半徑 (r)",
+    min_value=0.1,    # 設定最小值，避免輸入 0 或負數導致圖形崩潰
+    max_value=100.0,  # 設定最大值上限
+    value=2.0,        # 預設數值
+    step=0.5,         # 點擊上下箭頭時的增減幅度
+    format="%.2f"     # 強制顯示到小數點後兩位，增加工程嚴謹度
+)
 
 st.sidebar.markdown("---")
 st.sidebar.write("💡 **工程應用提示**：在測量學中，我們常利用格林定理（面積計算特例）來求算不規則土地的面積；在流體力學中，它則關乎環流與旋度的計算。")
